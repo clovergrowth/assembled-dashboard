@@ -237,18 +237,13 @@
   </div>
 </div>
 
+<script src="/env-config.js"></script>
 <script>
-// Token stored in localStorage — never committed to source
-let AT_TOKEN = localStorage.getItem('at_token') || '';
-let BASE_ID  = localStorage.getItem('at_base')  || '';
-
+const AT_TOKEN = window.AIRTABLE_TOKEN;
+const BASE_ID  = window.AIRTABLE_BASE_ID;
 if (!AT_TOKEN || !BASE_ID) {
-  const tok  = prompt('Airtable Personal Access Token:');
-  const base = prompt('Airtable Base ID (appXXXXXXXX):');
-  if (!tok || !base) { document.body.innerHTML = '<div style="color:#ff4757;padding:40px;font-family:Arial">Token required to load dashboard.</div>'; throw new Error('No token'); }
-  localStorage.setItem('at_token', tok);
-  localStorage.setItem('at_base', base);
-  AT_TOKEN = tok; BASE_ID = base;
+  document.body.innerHTML = '<div style="color:#ff4757;padding:40px;font-family:Arial;font-size:14px">Missing env vars: VITE_AIRTABLE_TOKEN and VITE_AIRTABLE_BASE_ID must be set in Vercel.</div>';
+  throw new Error('Missing env config');
 }
 const TABLES = {
   internal: 'tbl89Uy9Zw01WSEp5',
