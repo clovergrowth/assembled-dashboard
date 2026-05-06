@@ -13,10 +13,10 @@
   :root {
     --lime: #CEEB13;
     --lime-dim: #a8c40f;
-    --lime-glow: rgba(206,235,19,0.12);
-    --black: #0b1437;        /* Horizon navy.900 adapted to dark */
-    --card: #111c44;         /* Horizon navy.800 */
-    --card2: #1b254b;        /* Horizon navy.700 */
+    --lime-glow: rgba(206,235,19,0.10);
+    --black: #000000;
+    --card: #0f0f0f;
+    --card2: #181818;
     --border: rgba(255,255,255,0.06);
     --text: #ffffff;
     --muted: #a3aed0;        /* Horizon secondaryGray.600 */
@@ -47,66 +47,100 @@
     min-height: 100vh;
   }
 
-  /* Header — Horizon-style glass panel */
-  .header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 18px 32px;
-    background: rgba(17,28,68,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
+  /* ── Sidebar layout ── */
+  .app { display: flex; min-height: 100vh; }
+
+  .sidebar {
+    width: 260px; flex-shrink: 0;
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    position: fixed; top: 0; left: 0; bottom: 0;
+    z-index: 200;
     box-shadow: var(--shadow-card);
-    position: sticky; top: 0; z-index: 100;
-  }
-  .header-brand { display: flex; align-items: center; gap: 14px; }
-  .header-logo {
-    width: 36px; height: 36px;
-    background: var(--lime);
-    border-radius: 12px;           /* Horizon radius */
-    box-shadow: 0 4px 14px rgba(206,235,19,0.35);
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 900; color: #000; font-size: 15px;
-  }
-  .header-title { font-size: 15px; font-weight: 700; }
-  .header-sub { font-size: 12px; color: var(--muted); margin-top: 2px; font-weight: 400; }
-  .header-badge {
-    background: var(--lime); color: #000;
-    font-size: 11px; font-weight: 700;
-    padding: 4px 14px;
-    border-radius: 50px;           /* Horizon pill */
-    box-shadow: 0 4px 14px rgba(206,235,19,0.25);
+    overflow-y: auto;
   }
 
-  /* Tabs — Horizon pill-style active */
-  .tabs-bar {
-    display: flex; gap: 4px;
-    padding: 12px 32px;
-    background: rgba(17,28,68,0.6);
-    backdrop-filter: blur(10px);
+  .sidebar-brand {
+    display: flex; align-items: center; gap: 12px;
+    padding: 28px 24px 24px;
     border-bottom: 1px solid var(--border);
-    overflow-x: auto; scrollbar-width: none;
   }
-  .tabs-bar::-webkit-scrollbar { display: none; }
+  .sidebar-logo {
+    width: 38px; height: 38px; flex-shrink: 0;
+    background: var(--lime);
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(206,235,19,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; color: #000; font-size: 16px;
+  }
+  .sidebar-brand-text { overflow: hidden; }
+  .sidebar-title { font-size: 14px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sidebar-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  .sidebar-section { padding: 20px 16px 8px; }
+  .sidebar-section-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); padding: 0 8px; margin-bottom: 6px; }
+
   .tab-btn {
-    display: flex; align-items: center; gap: 7px;
-    padding: 9px 16px;
+    display: flex; align-items: center; gap: 10px;
+    width: 100%; padding: 11px 12px;
     font-family: 'DM Sans', Arial, sans-serif;
     font-size: 13px; font-weight: 500;
     color: var(--muted);
     background: none; border: none; cursor: pointer;
-    white-space: nowrap;
     border-radius: var(--radius-btn);
-    transition: all 0.25s ease;   /* Horizon .25s all ease */
+    transition: all 0.25s ease;
+    text-align: left;
   }
-  .tab-btn svg { width: 15px; height: 15px; stroke: currentColor; flex-shrink: 0; }
+  .tab-btn svg { width: 16px; height: 16px; stroke: currentColor; flex-shrink: 0; }
   .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.05); }
   .tab-btn.active {
     color: var(--lime);
     background: var(--lime-glow);
-    box-shadow: inset 0 0 0 1px rgba(206,235,19,0.2);
+    font-weight: 600;
+    box-shadow: inset 0 0 0 1px rgba(206,235,19,0.15);
+  }
+  .tab-btn.active svg { filter: drop-shadow(0 0 4px rgba(206,235,19,0.5)); }
+
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .sidebar-badge {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 12px;
+    background: var(--lime-glow);
+    border: 1px solid rgba(206,235,19,0.15);
+    border-radius: var(--radius-btn);
+    font-size: 11px; font-weight: 700; color: var(--lime);
+  }
+  .sidebar-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 6px var(--lime); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  /* Main area */
+  .main { margin-left: 260px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 32px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(16px);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .topbar-title { font-size: 18px; font-weight: 700; }
+  .topbar-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .topbar-date {
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 50px;
+    padding: 6px 14px;
+    font-size: 12px; color: var(--muted); font-weight: 500;
   }
 
   /* Content */
-  .content { padding: 28px 32px; max-width: 1400px; margin: 0 auto; }
+  .content { padding: 28px 32px; flex: 1; }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; animation: fadeIn 0.2s ease; }
   @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
@@ -230,29 +264,53 @@
 </head>
 <body>
 
-<div class="header">
-  <div class="header-brand">
-    <div class="header-logo">C</div>
-    <div>
-      <div class="header-title">Crusoe — SEO Crawl Dashboard</div>
-      <div class="header-sub">Screaming Frog · crusoe.ai · <span id="crawl-date-display">Loading…</span></div>
+<div class="app">
+
+<!-- ── Sidebar ── -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="sidebar-logo">C</div>
+    <div class="sidebar-brand-text">
+      <div class="sidebar-title">Crusoe SEO</div>
+      <div class="sidebar-sub">crusoe.ai · SF Crawl</div>
     </div>
   </div>
-  <div class="header-badge">Live · Airtable</div>
-</div>
 
-<div class="tabs-bar">
-  <button class="tab-btn active" data-tab="summary"><i data-lucide="layout-dashboard"></i> Summary</button>
-  <button class="tab-btn" data-tab="response-codes"><i data-lucide="activity"></i> Response Codes</button>
-  <button class="tab-btn" data-tab="url-types"><i data-lucide="layers"></i> URL Types</button>
-  <button class="tab-btn" data-tab="indexability"><i data-lucide="eye"></i> Indexability</button>
-  <button class="tab-btn" data-tab="site-structure"><i data-lucide="git-branch"></i> Site Structure</button>
-  <button class="tab-btn" data-tab="on-page"><i data-lucide="file-text"></i> On-Page</button>
-  <button class="tab-btn" data-tab="content-issues"><i data-lucide="alert-triangle"></i> Content Issues</button>
-  <button class="tab-btn" data-tab="structured-data"><i data-lucide="code-2"></i> Structured Data</button>
-  <button class="tab-btn" data-tab="security"><i data-lucide="shield"></i> Security</button>
-  <button class="tab-btn" data-tab="sitemaps"><i data-lucide="map"></i> Sitemaps</button>
-</div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Reports</div>
+    <button class="tab-btn active" data-tab="summary"><i data-lucide="layout-dashboard"></i> Summary</button>
+    <button class="tab-btn" data-tab="response-codes"><i data-lucide="activity"></i> Response Codes</button>
+    <button class="tab-btn" data-tab="url-types"><i data-lucide="layers"></i> URL Types</button>
+    <button class="tab-btn" data-tab="indexability"><i data-lucide="eye"></i> Indexability</button>
+    <button class="tab-btn" data-tab="site-structure"><i data-lucide="git-branch"></i> Site Structure</button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">On-Site</div>
+    <button class="tab-btn" data-tab="on-page"><i data-lucide="file-text"></i> On-Page</button>
+    <button class="tab-btn" data-tab="content-issues"><i data-lucide="alert-triangle"></i> Content Issues</button>
+    <button class="tab-btn" data-tab="structured-data"><i data-lucide="code-2"></i> Structured Data</button>
+    <button class="tab-btn" data-tab="security"><i data-lucide="shield"></i> Security</button>
+    <button class="tab-btn" data-tab="sitemaps"><i data-lucide="map"></i> Sitemaps</button>
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-badge">
+      <div class="sidebar-badge-dot"></div>
+      Live · Airtable
+    </div>
+  </div>
+</aside>
+
+<!-- ── Main ── -->
+<div class="main">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title" id="topbar-title">Summary</div>
+      <div class="topbar-sub">Screaming Frog · crusoe.ai</div>
+    </div>
+    <div class="topbar-date">Crawl: <span id="crawl-date-display">Loading…</span></div>
+  </div>
 
 <div class="content">
   <div id="global-loading" class="loading">
@@ -937,9 +995,25 @@ async function init() {
 
 window.filterTable = filterTable;
 lucide.createIcons();
+
+// Update topbar title on tab switch
+const TITLES = {
+  'summary': 'Summary', 'response-codes': 'Response Codes', 'url-types': 'URL Types',
+  'indexability': 'Indexability', 'site-structure': 'Site Structure', 'on-page': 'On-Page Elements',
+  'content-issues': 'Content Issues', 'structured-data': 'Structured Data',
+  'security': 'Security', 'sitemaps': 'Sitemaps'
+};
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById('topbar-title').textContent = TITLES[btn.dataset.tab] || btn.dataset.tab;
+  });
+});
+
 init().catch(e => {
   document.getElementById('global-loading').innerHTML = `<div style="color:var(--red)">Error loading data: ${e.message}</div>`;
 });
 </script>
+</div><!-- /main -->
+</div><!-- /app -->
 </body>
 </html>
